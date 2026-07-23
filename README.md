@@ -60,6 +60,7 @@
 ```text
 .
 ├── SKILL.md                         # 可直接复用的公开研究 Skill
+├── QUICKSTART.md                    # 实际调用示例与三种使用模式
 ├── templates/
 │   ├── evidence-ledger.md           # 证据分级与来源台账
 │   └── research-output.md           # 标准研究输出模板
@@ -72,6 +73,8 @@
 ```
 
 ## 快速使用
+
+最直接的上手方法见 [`QUICKSTART.md`](./QUICKSTART.md)。
 
 将以下指令交给研究员或 AI Agent：
 
