@@ -6,6 +6,14 @@
 
 这不是一个自动给出股票结论的工具，而是一套用于提高研究深度、证据透明度和可复用性的研究框架。
 
+## Research Framework Passport
+
+如果你是另一个 GPT 账户、Custom GPT、研究 Agent 或协作者，希望了解 Kerwin 当前完整研究架构，请先阅读：
+
+[`KERWIN-RESEARCH-FRAMEWORK-PASSPORT.md`](./KERWIN-RESEARCH-FRAMEWORK-PASSPORT.md)
+
+它说明当前 Signal-Chain、Macro & Liquidity、AI Infrastructure Economics & Capital Cycle 三层研究架构，以及跨账户同步、开放研究、反固化和版本更新原则。公开 Passport 只提供方法论导向，不包含私有生产规则、敏感校准或内部数据。
+
 ## 项目边界：公开研究方法，不是网站生产后台
 
 本仓库是**对外发布的研究方法项目**，公开的是可以被其他研究者、投资人和 AI Agent 复用的思维框架、证据标准、模板与公开案例。
@@ -59,17 +67,18 @@
 
 ```text
 .
-├── SKILL.md                         # 可直接复用的公开研究 Skill
-├── QUICKSTART.md                    # 实际调用示例与三种使用模式
+├── SKILL.md                              # 可直接复用的公开研究 Skill
+├── QUICKSTART.md                         # 实际调用示例与三种使用模式
+├── KERWIN-RESEARCH-FRAMEWORK-PASSPORT.md # 多账户 / 多Agent研究框架入口
 ├── templates/
-│   ├── evidence-ledger.md           # 证据分级与来源台账
-│   └── research-output.md           # 标准研究输出模板
+│   ├── evidence-ledger.md                # 证据分级与来源台账
+│   └── research-output.md                # 标准研究输出模板
 ├── examples/
-│   └── ineffable-rubin-a5x.md       # 从电话会细节扩展到产业链的案例
-├── CONTRIBUTING.md                  # 贡献方式
-├── SECURITY.md                      # 隐私与安全边界
-├── CITATION.cff                     # 项目引用信息
-└── LICENSE                          # CC BY 4.0
+│   └── ineffable-rubin-a5x.md            # 从电话会细节扩展到产业链的案例
+├── CONTRIBUTING.md                       # 贡献方式
+├── SECURITY.md                           # 隐私与安全边界
+├── CITATION.cff                          # 项目引用信息
+└── LICENSE                               # CC BY 4.0
 ```
 
 ## 快速使用
@@ -121,7 +130,7 @@
 
 Kerwin Signal-Chain Research is a public, evidence-first workflow for expanding a small but meaningful disclosure into a structured industry-chain research project. It moves from signal discovery to entity verification, technical decomposition, supply-chain mapping, investment implications, falsification criteria, publication, and ongoing monitoring.
 
-The private EnyaClawd website-production workflow (`kerwin-web`) is deliberately excluded from this repository.
+The public Framework Passport provides orientation for multiple GPT accounts and research Agents, while private canonical frameworks remain separated from public production methodology.
 
 Keywords: `investment research`, `earnings calls`, `industry chain`, `AI infrastructure`, `evidence grading`, `agent workflow`, `continual learning`, `NVIDIA Rubin`, `Google Cloud A5X`.
 
