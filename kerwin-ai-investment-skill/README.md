@@ -1,4 +1,4 @@
-# Kerwin AI Investment Skill — Community Edition v0.2.0
+# Kerwin AI Investment Skill — Community Edition v0.3.0
 
 > 不是告诉 AI 应该得出什么结论，而是教它如何形成可验证的投资判断。
 >
@@ -8,13 +8,19 @@
 
 `Reality → Global Positioning（如适用） → Mechanism → Ledger → Economics → Capital → Judgment → Falsification → Next Watchpoint`
 
+## v0.3.0：Research Depth Contract
+
+新增 QUICK / STANDARD / DEEP 三档研究深度。**STANDARD 为默认**：用户哪怕只问一句“这家公司怎么看？”，也不能因为 Prompt 很短而退化为新闻摘要。
+
+STANDARD 要求至少覆盖 Decision Question、关键事实与口径、全球定位（如适用）、因果机制、Ledger Delta、Economics / Capital、Alternative Model、Falsification 与 Next Watchpoints。
+
 ## 产品页与下载
 
 产品说明、WorkBuddy 安装包、Starter Prompts 与永久二维码：
 
 https://enyaclawd.com/kerwin-ai-investment-skill/
 
-当前版本：`v0.2.0`
+当前版本：`v0.3.0`
 
 ## 适用范围
 
