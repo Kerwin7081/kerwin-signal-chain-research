@@ -5,7 +5,7 @@ display_name_en: Kerwin AI Investment Skill
 description: 用于财报、公司新闻、产业链变化、AI基础设施、机器人、商业模式与资本回报的投资研究 Skill；支持新手引导，并可把 A 股、港股及其他本地 AI 公司放回全球 AI 产业链定位与比较。
 description_zh: 不是告诉 AI 应该得出什么结论，而是教它如何从现实事实形成可验证的投资判断；从你熟悉的一家公司，进入全球 AI 产业链。
 description_en: A model-agnostic investment-research method with guided onboarding and global AI value-chain mapping.
-version: 0.2.0
+version: 0.3.0
 author: Kerwin
 ---
 
@@ -34,6 +34,7 @@ Reality
 执行前按需读取：
 
 - @references/onboarding.md
+- @references/research-depth-contract.md
 - @references/starter-prompts.md
 - @references/quickstart.md
 - @references/global-ai-chain-mapping.md
@@ -55,6 +56,50 @@ Reality
 5. 对 A 股 / 港股用户主动提示：可以直接输入熟悉的本地 AI 公司，Skill 会把它放回全球 AI 产业链定位。
 
 如果用户只说“帮我看看某公司”，优先给出 3–5 个研究方向供选择，而不是立刻输出大而全报告。
+
+## 0.5 Research Depth Contract｜短问题不等于浅研究
+
+默认研究深度由任务类型决定，不由用户提示词的长短决定。
+
+### QUICK
+仅当用户明确要求“一句话”“简单说说”“快速看一下”“只要结论”等快速模式时使用。
+
+最低保留：
+- 一句话判断；
+- 最关键的 Mechanism；
+- Ledger Delta；
+- 1–2 条 Falsification / Next Watchpoint。
+
+### STANDARD｜默认
+当用户问“这家公司怎么看”“这个赛道怎么理解”“这份财报怎么看”“这条新闻重要吗”等投资研究问题时，默认进入 STANDARD，即使用户只输入一句话。
+
+STANDARD 不得退化为新闻摘要。至少完成：
+1. Decision Question；
+2. Reality：5–8 个关键事实，注明日期/口径；不足则明确 unknowns；
+3. Global Positioning（适用时）：全球产业链位置 + 3–5 个真正可比的全球同行；
+4. Mechanism：至少一条完整因果传导链；
+5. Ledger Delta：识别 3–6 个最重要状态变量；
+6. Economics：收入、毛利、单位经济或公式与缺失变量；
+7. Capital：Capex / FCF / ROIC / WACC / Valuation 中适用的资本层分析；
+8. Model Competition：Base Model + Alternative Model + Disconfirming Evidence；
+9. Thesis Impact + Confidence；
+10. Falsification：至少 2 条具体条件；
+11. Next Watchpoints：至少 3 个。
+
+### DEEP
+当用户要求“深度研究”“系统分析”“投资报告”“专题研究”时，进入 DEEP。
+在 STANDARD 基础上进一步加入：
+- 更完整的历史序列与同行横向比较；
+- unit economics / valuation / scenario / sensitivity；
+- 关键变量的上下游交叉验证；
+- 对市场共识与隐含预期的拆解。
+
+### 跨模型最低质量规则
+- 除非用户明确要求 QUICK，否则不得因为 Prompt 很短而降低研究深度。
+- 如果运行环境检索能力弱，不能因此删掉研究步骤；应保留结构，并标注缺失证据与低置信度。
+- 不得用“受益 AI”“行业空间巨大”“龙头优势明显”等泛化叙事代替 Mechanism / Economics / Capital。
+- 传播性很强的二分叙事或口号，例如“美国定义大脑、中国定义身体”，只能标记为 `Hypothesis / Inference`，必须同时给出 Alternative Model 与 Falsification。
+- 如果证据不足以算 ROIC 或单位经济，输出公式、缺失变量和下一步验证项，而不是跳过 Capital 层。
 
 ## 1. 先形成真正的 Decision Question
 
@@ -261,7 +306,7 @@ Revenue → Gross Margin → Opex / Service Burden → NOPAT / FCF → Invested 
 
 ## 10. 输出要求
 
-除非用户要求其他格式，按 @references/output-contract.md 输出。
+除非用户要求其他格式，按 @references/output-contract.md 输出，并遵守 @references/research-depth-contract.md 的 QUICK / STANDARD / DEEP 最低深度。
 
 通常包含：
 
@@ -295,6 +340,6 @@ Revenue → Gross Margin → Opex / Service Burden → NOPAT / FCF → Invested 
 
 如果运行环境支持实时搜索或数据工具，先验证关键事实和 as-of 日期，再执行本 Skill。
 
-如果用户只需要快速判断，可以先给简版结论，但仍必须保留最重要的 Global Positioning（如适用）、Mechanism、Ledger Delta 和 Falsification。
+只有当用户明确要求 QUICK（例如“一句话”“简单说说”“快速看一下”）时才使用简版结论，并仍保留最重要的 Global Positioning（如适用）、Mechanism、Ledger Delta 和 Falsification。其他投资研究问题默认 STANDARD。
 
 如果用户不会写提示词，主动切换到 Starter Onboarding Mode，而不是要求用户先学会 Prompt Engineering。
