@@ -1,5 +1,35 @@
 # Changelog — Kerwin AI Investment Skill
 
+## v0.3.2 — 2026-09-05
+
+### Added
+
+- `Evidence Integrity Gate`：核心规则 `No provenance, no hard fact`；
+- `Evidence Status`：FACT / REPORTED / MANAGEMENT CLAIM / ESTIMATE / CALCULATION / INFERENCE / SCENARIO / UNKNOWN；
+- `Source Tier S1–S6`：区分监管文件、公司披露、可观察数据、可靠媒体、第三方估计与未验证线索；
+- `Scope / Definition Gate`：检查时间口径、统计口径、单位币种、产品/地区范围；
+- `Calculation Gate`：衍生值必须展示公式或关键输入；
+- `Conflict Gate`：来源冲突不得静默平均；
+- `Freshness Gate`：Next Watchpoints 输出前确认未来节点是否已经发生；
+- `Evidence-led Confidence`：Confidence 由证据质量驱动；
+- 5 个固定 Runtime Eval：长鑫科技、中际旭创、宇树科技、Snowflake、5GW AI Infrastructure Contract；
+- 20 分 Runtime Eval Rubric 与 Critical Failure 规则。
+
+### Changed
+
+- STANDARD 默认输出中的 Reality 改为 Evidence Table；
+- 核心技术指标、合同、产能、市占率、估值与资本开支不得裸写；
+- S4 媒体报道在未回到原始文件前默认写 `REPORTED`；
+- S5 行业/券商/专家数据默认写 `ESTIMATE`；
+- 无法联网执行 Freshness Gate 时必须明确 freshness 未独立验证。
+
+## v0.3.1 — 2026-09-05
+
+### Changed
+
+- WorkBuddy Desktop Compatibility Packaging：安装 ZIP 根目录直接包含 `SKILL.md`；
+- 提供 standalone 单文件导入方式，减少不同 Runtime 对目录结构的兼容问题。
+
 ## v0.3.0 — 2026-09-04
 
 ### Added
@@ -22,11 +52,11 @@
 
 ### Added
 
-- `STARTER_ONBOARDING_MODE`：当用户问“能做什么 / 怎么用 / 有什么 sample”时自动进入新手引导；
-- `Starter Prompts`：提供可直接复制的财报、新闻、产业链、公司对比与 A 股 / 港股场景提示词；
-- `Global AI Chain Mapping`：把本地 AI 公司放回全球产业链定位；
-- `Global Ontology, Local Reality`：全球产业框架、本地经营现实；
-- `Global Peer Mapping Ledger`：比较本地公司与全球同行的功能、技术、客户、利润率、资本强度和 ROIC；
+- `STARTER_ONBOARDING_MODE`；
+- `Starter Prompts`；
+- `Global AI Chain Mapping`；
+- `Global Ontology, Local Reality`；
+- `Global Peer Mapping Ledger`；
 - WorkBuddy ZIP 安装包；
 - EnyaClawd 产品页、永久产品页二维码和版本化下载地址。
 
