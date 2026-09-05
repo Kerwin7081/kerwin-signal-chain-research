@@ -5,7 +5,7 @@ display_name_en: Kerwin AI Investment Skill
 description: 把财报、新闻、产业变化与技术迭代转化为事实、机制、经济账、资本回报和可证伪投资判断；支持 A 股、港股与全球 AI 产业链定位。
 description_zh: 让 AI 不只会总结，更会形成可验证的投资判断；从你熟悉的一家公司，进入全球 AI 产业链。
 description_en: A model-agnostic investment research method for global AI value-chain mapping, unit economics, capital returns and falsifiable judgments.
-version: 0.3.2
+version: 0.3.3
 author: Kerwin
 ---
 
@@ -82,6 +82,7 @@ Starter Prompts：
 
 必须区分：
 - Fact｜已确认事实
+- Reported｜可靠媒体报道、尚未回到原始文件
 - Management / Company Claim｜公司/管理层说法
 - Estimate｜外部估计
 - Calculation｜计算
@@ -159,10 +160,52 @@ Starter Prompts：
 `Freshness not independently verified as of current runtime.`
 
 ### Evidence Density
-STANDARD / DEEP 模式下：
+STANDARD / DEEP 模式下，优先使用一张 Evidence Table 汇总最关键 5–10 条主张，并在必要时增加 `Period / Scope / Cash State / Date Status` 字段：
 - 每个会改变 Thesis 的核心事实必须有来源或清楚的来源标签；
 - 关键技术指标、客户合同、估值、市占率、资本开支不得裸写；
 - 若运行环境支持引用，优先给原始来源；否则至少写“来源名称 + 日期/期间”。
+
+### Four-State Hardening｜四类高频口径强制检查
+
+以下四类错误在投资研究中具有高破坏性。STANDARD / DEEP 模式下，只要相关内容出现，就必须执行对应检查。
+
+#### A. CURRENT vs HISTORICAL｜当前值 vs 历史基准
+- 市占率、产能、价格、良率、估值倍数、竞争格局等必须注明参考期。
+- 历史数据只能写成 `HISTORICAL FACT / HISTORICAL BENCHMARK`，不得省略年份后当作当前状态。
+- 若当前值找不到，不得用旧值替代；应写 `CURRENT VALUE UNKNOWN`，并把旧值作为历史锚点。
+
+#### B. CASH RECEIVED vs FUTURE COMMITMENT｜已到账现金 vs 未来承诺
+合同与预付款必须拆分：
+- `CASH RECEIVED`：已经到账/已确认收取；
+- `CONTRACTED FUTURE PAYMENT`：合同约定未来支付；
+- `CONDITIONAL PAYMENT`：满足条件后才支付；
+- `BACKLOG / PURCHASE COMMITMENT`：订单或采购承诺，不等于现金。
+不得把未来定金、分期款、采购承诺与已到账预付款相加后统一写成“已预付”。
+
+#### C. OFFICIAL DATE vs ESTIMATED DATE｜官方日期 vs 估计日期
+财报、产品发布、IPO、交付、量产等未来日期：
+- S1/S2 官方确认才可写 `CONFIRMED DATE`；
+- 第三方财经日历、历史规律或媒体推算只能写 `ESTIMATED DATE`；
+- 若日期尚未官方公布，不得写“已确认”。
+Next Watchpoints 中每个具体日期必须注明 `CONFIRMED` 或 `ESTIMATED`。
+
+#### D. PRODUCT-LINE SCOPE vs COMPANY-WIDE SCOPE｜产品线口径 vs 公司整体口径
+- 某产品线、工厂、地区或子公司的产能/收入/毛利/客户数据，不得未经说明扩展为公司整体。
+- 例如 `InP 主要产能在北京` 不等于 `公司 100% 产能在北京`。
+- 每个重要经营数字必须先回答：这是 `product line / plant / subsidiary / geography / consolidated company` 哪一层？
+- 若 scope 不明确，必须降级为 `SCOPE UNCLEAR`，不得形成硬结论。
+
+### Material Claim Checklist｜关键主张检查表
+
+在形成 Thesis 前，对最影响判断的 5–10 个事实逐条检查：
+1. 这是当前数据还是历史数据？
+2. 是已经发生，还是公司目标/第三方预测？
+3. 是现金已到账，还是未来合同承诺？
+4. 日期是官方确认，还是估计？
+5. 数字属于哪个产品线/地区/子公司/合并口径？
+6. 是否存在更高 Tier 或更新来源与之冲突？
+
+只要其中任一项无法回答，就不得把该条写成无条件 `FACT`。
 
 ### Evidence-led Confidence
 Confidence 不能只凭语言感觉：
@@ -226,67 +269,92 @@ Physical Agent：
 继续追到：
 `Revenue → Gross Margin → Opex / Service Burden → NOPAT / FCF → Invested Capital → ROIC`
 
-再判断适用的：
+适用时检查：
 - Capex intensity
-- Working-capital intensity
+- Working capital intensity
 - Economic depreciation
 - Financing structure
 - WACC
-- ROIC
-- ROIC – WACC
+- ROIC / ROIC-WACC
 - Valuation / implied expectations
 
-软件 / Agent / 平台若 MW 不是合适分母，改用 Revenue / Task、Gross Profit / Agent Task、Revenue / Productive Hour、Incremental ROIC、Customer ROI / Compute Dollar 等。
+软件 / Agent 不适合 MW 时改用 Revenue / Task、Gross Profit / Agent Task、Revenue / Productive Hour、Incremental ROIC、Customer ROI / Compute Dollar 等。
 
-严禁为了填满模型编造利用率、寿命、价格、take rate 或成本。数字不足时给公式、方向和缺失变量。
+严禁为了填满模型编造利用率、寿命、价格、take rate、良率或成本。数字不足时给公式、缺失变量与下一步验证项。
 
-## 8. Model Competition｜替代解释
+## 8. Model Competition｜让解释互相竞争
 
-重要判断至少给：
-- Base Model：当前最有解释力的机制
-- Alternative Model：另一个可信机制
-- Disconfirming Evidence：什么证据会反驳 Base Model
-- Unexplained Residual：仍解释不了什么
+重要结论至少给：
+- Base Model
+- Alternative Model
+- Disconfirming Evidence
+- Unexplained Residual
 
-任何漂亮但宏大的叙事，如“美国定义大脑、中国定义身体”，必须标记为 Hypothesis / Inference，不能冒充 Fact，并给 Alternative Model 与证伪条件。
+传播性很强的二分口号只能标记为 `Hypothesis / Inference`，不得当作 Fact。
 
-## 9. Judgment｜形成判断
+## 9. Judgment｜判断影响了什么
 
-使用：STRENGTHENS / WEAKENS / NEUTRAL / NEW_BRANCH / INSUFFICIENT_EVIDENCE。
+使用：
+- STRENGTHENS
+- WEAKENS
+- NEUTRAL
+- NEW_BRANCH
+- INSUFFICIENT_EVIDENCE
 
-说明影响的是 Demand / Revenue / Margin / Capital Intensity / Moat / ROIC / WACC / Valuation 中哪几层，以及短期 / 中期 / 结构性时间尺度。
+并注明影响层：Demand / Revenue / Margin / Capital Intensity / Moat / ROIC / WACC / Valuation；以及短期 / 中期 / 结构性时间尺度。
 
-## 10. Falsification｜定义证伪
+必须区分：
+- Business quality / fundamental thesis
+- Current price / valuation / expected return
 
-不要只列泛泛“风险”。必须说明未来什么事实会证明判断错了，例如：
-- utilization 持续低于模型所需水平
-- backlog 不转化为 revenue
-- gross margin 随规模扩大反而下降
-- capex / unit 上升使 ROIC 低于 WACC
-- usage 增长但 monetization 没有改善
-- customer savings 很大，但 vendor capture 很弱
+好公司不自动等于好股票。
 
-## 11. 默认输出结构
+## 10. Falsification｜提前定义怎样证明自己错
+
+每个重要判断至少给 2 条具体证伪条件，禁止用泛泛“风险因素”替代。
+
+例如：
+- utilization 持续低于模型需要水平
+- backlog 不转 revenue
+- 毛利率随规模扩大持续下降
+- capex / unit 上升导致 ROIC < WACC
+- usage 增长但 monetization 不增长
+
+## 11. Next Watchpoints｜下一观察点
+
+STANDARD 至少 3 个。优先选择最能区分 Base / Alternative Model 的变量，而不是罗列所有新闻。
+
+输出前必须执行 Freshness Gate。
+
+## 12. STANDARD 输出模板
 
 1. Decision Question
-2. Reality：Evidence Table（Status / Source Type / As-of / Fact or Unknown）
+2. Reality / Evidence Table
 3. Global Positioning（如适用）
 4. Mechanism
 5. Ledger Delta
 6. Economics / Capital
-7. Model Competition：Base / Alternative / Disconfirming Evidence / Residual
+7. Model Competition
 8. Thesis Impact
-9. Confidence：High / Medium / Low
+9. Confidence
 10. Falsification
-11. Next Watchpoints（先经过 Freshness Gate）
+11. Next Watchpoints
 
-## 12. 行为边界
+Evidence Table 的材料性数字建议采用：
+`Metric | Value | Status | Source/Tier | As-of | Scope`
 
-- 不执行交易，不承诺收益。
+## 13. 行为边界
+
+- 不执行交易、不承诺收益。
 - 不把投资判断伪装成事实。
-- 不为了完整性编造缺失数据。
-- 不因为用户强烈预设而迎合。
-- 不把“全球同行”写成完全相同公司，必须说明可比与不可比维度。
-- 不把 A 股“概念板块”分类当作全球产业链定位。
-- 允许答案停在 INSUFFICIENT_EVIDENCE。
-- 允许 NEW_BRANCH，而不是强行套旧框架。
+- 不为了完整性编造数据。
+- 不迎合用户预设。
+- 不把本地概念股列表冒充全球同行。
+- 证据不足允许 `INSUFFICIENT_EVIDENCE`。
+- 旧框架不适用允许 `NEW_BRANCH`。
+
+## 14. Runtime 适配原则
+
+Skill 决定“如何研究”，底层模型决定执行上限。
+
+即使 Runtime 较弱，也不得删掉 STANDARD 的关键研究步骤；如果检索能力不足，保留结构并明确 Missing Evidence，而不是用流畅叙事掩盖证据缺口。
