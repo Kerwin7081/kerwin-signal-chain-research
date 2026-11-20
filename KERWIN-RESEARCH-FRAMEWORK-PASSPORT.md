@@ -1,7 +1,7 @@
 # Kerwin Research Framework Passport
 
-**Updated:** 2026-08-31  
-**Public architecture orientation:** Kerwin Research OS 1.2  
+**Updated:** 2026-11-20  
+**Public architecture orientation:** Kerwin Research OS 1.3 (simplified public conceptual model)  
 **Purpose:** public orientation for GPT accounts, research Agents and collaborators that need to understand the current Kerwin research architecture without access to private production repositories.
 
 ## Authority boundary
@@ -14,9 +14,9 @@ Kerwin Research OS also contains a private Thesis State Plane for current falsif
 
 Agents without private access may use this Passport to understand the architecture and current public version orientation, but should not infer private state that is not explicitly projected here.
 
-## Research OS 1.2 — five-plane orientation
+## Research OS 1.3 — five-plane public conceptual orientation
 
-The current architecture separates five kinds of state so that one file or Agent cannot silently become a second authority:
+For public orientation, five broad state categories are useful. The private Research OS v1.3 topology additionally separates Agent architecture/role authority, investment Skill routing and evaluation, and private descriptive shared context. This public model is intentionally simplified and is **not** the canonical machine-readable topology or an inventory of private runtime data:
 
 ```text
 1. Production Control Plane
